@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .divToBut{
+      cursor: pointer;
+      margin-right: 20px;
+      font-size: 14px;
+      color: #fff;
+      padding: 4px;
+      border-radius: 4px;
+      border-color: rgb(248, 115, 26);
+      background-color: rgb(248, 115, 26);
+      text-shadow: 0 -1px 0 rgba(0,0,0,.12);
+      -webkit-box-shadow: 0 2px 0 rgba(0,0,0,.045);
+      box-shadow: 0 2px 0 rgba(0,0,0,.045);
+    }
+    .divToBut:nth-child(2) {
+      border-color: rgb(20, 138, 248);
+      background-color: rgb(20, 138, 248);
+    }
+    .divToBut:active{
+      outline: 0;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+    .btnBox{
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <div class="btnBox">
+    <div id="deClick" class="divToBut">防抖按钮</div>
+    <div id="thClick" class="divToBut">节流按钮</div>
+  </div>
+  <div id="num">0</div>
+</body>
+<script>
+  let num = 0
+  let $deClick = document.getElementById('deClick')
+  let $thClick = document.getElementById('thClick')
+  let $num = document.getElementById('num');
+  function changeNum() {
+    num++
+    $num.innerText = num
+  }
+  $deClick.addEventListener('click', debounce(changeNum, 500))
+  $thClick.addEventListener('click', throttle(changeNum, 500, false))
+  // 防抖函数
+  function debounce(fn, timeout) {
+    let time = null
+    return function() {
+      clearTimeout(time)
+      time = setTimeout(() => {
+        fn.apply(this, arguments)
+      }, timeout)
+    }
+  } 
+  // 函数节流
+  function throttle(fn, timeout, isNow = true) {
+    let flag = true
+    return function() {
+      if (!flag) return
+      flag = false
+      if (isNow) {
+        fn.apply(this, arguments)
+      }
+      setTimeout(() => {
+        if (!isNow) {
+          fn.apply(this, arguments)
+        }
+        flag = true
+      }, timeout)
+    }
+  }
+</script>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拖拽</title>
+  <style>
+    .drag{
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background-color: rgb(240, 71, 71);
+      color: #fff;
+      text-align: center;
+      font-size: 30px;
+      line-height: 200px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="drag" id="drag">
+  拖拽的div
+</div>
+</body>
+<script>
+  const dargDom = document.getElementById('drag')
+  dargDom.onmousedown = function(event) {       
+    let shiftX = event.clientX - dargDom.getBoundingClientRect().left;       
+    let shiftY = event.clientY - dargDom.getBoundingClientRect().top;
+    console.log(event.clientX, event.pageX)
+    // dargDom.style.position = 'absolute';
+    // dargDom.style.zIndex = 1000;
+    // document.body.append(dargDom);
+    moveAt(event.pageX, event.pageY);       
+    // 移动现在位于坐标 (pageX, pageY) 上的球
+    // 将初始的偏移考虑在内
+    function moveAt(pageX, pageY) {
+      dargDom.style.left = pageX - shiftX + 'px';
+      dargDom.style.top = pageY - shiftY + 'px';
+    }
+    function onMouseMove(event) {
+      moveAt(event.pageX, event.pageY);
+    }
+    // 在 mousemove 事件上移动球
+    document.addEventListener('mousemove', onMouseMove);
+    // 放下球，并移除不需要的处理程序
+    dargDom.onmouseup = function() {
+      document.removeEventListener('mousemove', onMouseMove);
+      dargDom.onmouseup = null;
+    };
+  };
+  dargDom.ondragstart = function() {
+    return false;    
+  };
+</script>
+</html>

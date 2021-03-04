@@ -1,0 +1,34 @@
+<!-- 双向绑定 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h2>数据劫持（乞丐版双向绑定）</h2>
+  <div>
+    <input type="text" id='text1'>
+    <div id='show1'></div>
+  </div>
+</body>
+<script>
+  let textJson = {
+    text: ''
+  }
+  let text1 = document.getElementById('text1')
+  let show1 = document.getElementById('show1')
+  Object.defineProperty(textJson, 'text', {
+    set(val) {
+      show1.innerText = val
+    },
+    get(val) {
+      console.log(val)
+    }
+  })
+  text1.addEventListener('input', (e) => {
+    textJson.text = e.target.value
+  })
+</script>
+</html>

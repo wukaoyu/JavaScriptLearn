@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  *{
+    padding: 0px;
+    margin: 0px;
+  }
+  .a {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
+  .a::-webkit-media-controls {
+    display:none !important;
+  }
+  .imgGif{
+    width: 100vw;
+  }
+</style>
+<body>
+  <img class="imgGif" src="./1.gif" alt="" srcset="">
+</body>
+<script>
+  var video = document.getElementById('a')
+  a.play()
+  document.body.addEventListener('mousedown', function(){
+    a.muted = false;
+    console.log(a.muted)
+  }, false);
+
+</script>
+</html>

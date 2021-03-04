@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>点名</title>
+  <link rel="stylesheet" href="./css/element-ui.css">
+  <style>
+    *{
+      margin: 0px;
+      padding: 0px;
+    }
+    [v-cloak]{
+      display: none;
+    }
+    #app {
+      background-color: #f5f5f5;
+      height: 100vh;
+    }
+    .content{
+      display: flex;
+      justify-content: space-between;
+    }
+    .btnBox{
+      display: flex;
+      margin-right: 20px;
+      width: 200px;
+      height: 100vh;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .main{
+      width: calc((100vw - 240px) / 2);
+      background-color: #fff;
+      margin-right: 20px;
+      height: calc(100vh - 100px);
+      margin-top: 30px;
+      border-radius: 5px;
+      box-shadow: 5px 5px  10px 1px #ccc; 
+      padding: 20px;
+    }
+    .transition-box {
+      display: flex;
+      margin-bottom: 10px;
+      width: 100%;
+      height: 80px;
+      border-radius: 4px;
+      background-color: #F9ECCC;
+      padding: 0 20px;
+      line-height: 80px;
+      box-sizing: border-box;
+      margin-right: 20px;
+    }
+    .transition-box:first-child {
+      background-color:  #ccdef9;
+    }
+    .num {
+      min-width: 150px;
+    }
+    .score{
+      min-width: 100px;
+    }
+    .name{
+      width: 100%;
+    }
+    .title{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .getExcel{
+      margin-left: 0px !important;
+      margin-top: 20px;
+    }
+    .rollContent{
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      color: #000;
+      justify-content: space-between;
+    }
+    .rollScore{
+      display: flex;
+      align-items: center;
+    }
+    .transitionScroll{ 
+      position: relative;
+      overflow-y: auto;
+      height: calc(100% - 60px);
+    }
+    .transitionScroll:hover{
+      overflow-y: auto;
+    }
+    .isRepeat{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    .repeatBtn{
+      margin-right: 40px;
+      width: 200px;
+      height: 60px;
+      font-size: 20px;
+    }
+    .repeatBtn:last-child {
+      margin-right: 0px;
+    }
+  </style>
+  <script src="./js/vue.main.js"></script>
+  <script src="./js/element-ui.js"></script>
+</head>
+<body>
+  <div id="app" v-cloak>
+    <div v-if="isRepeat === null" class="isRepeat">
+      <el-button class="repeatBtn" type="primary" @click="isRepeat = true">重复点名</el-button>
+      <el-button class="repeatBtn" @click="isRepeat = false">不重复点名</el-button>
+    </div>
+    <div class="content" v-else>
+      <div class="btnBox">
+        <el-button type="primary" @click="getRoll">开始点名</el-button>
+        <el-button class="getExcel" @click="getExcel(0)">导出结果</el-button>
+      </div>
+      <div class="main">
+        <div class="title">
+          <h2>班级一</h2>
+          <el-button @click="getExcel(1)">导出结果</el-button>
+        </div>
+        <div class="transitionScroll">
+          <transition-group name="el-zoom-in-left">
+            <div class="transition-box" v-for="(item, index) in chooseClass1" :key="item.key">
+              <div class="num">序号：{{item.num}}</div>
+              <div class="name">姓名：{{item.name}}</div>
+              <div class="score">评分：{{item.score}}</div>
+            </div>
+          </transition-group>
+        </div>
+      </div>
+      <div class="main">
+        <div class="title">
+          <h2>班级二</h2>
+          <el-button @click="getExcel(2)">导出结果</el-button>
+        </div>
+        <div class="transitionScroll">
+          <transition-group name="el-zoom-in-left">
+            <div class="transition-box" v-for="(item, index) in chooseClass2" :key="item.key">
+              <div class="num">序号：{{item.num}}</div>
+              <div class="name">姓名：{{item.name}}</div>
+              <div class="score">评分：{{item.score}}</div>
+            </div>
+          </transition-group>
+        </div>
+      </div>
+      <el-dialog 
+      :close-on-click-modal=false 
+      :close-on-press-escape=false
+      :show-close=false
+      title="中奖的同学是：" 
+      :visible.sync="dialogRoll">
+        <div class="rollContent">
+          <div class="rollNum">序号：{{chooseData.num}}</div>
+          <div class="rollName">姓名：{{chooseData.name}}</div>
+          <div class="rollScore">
+            评分：<el-input-number ref="numberInput"  @keyup.enter.native="sureScore" v-model="chooseData.score"></el-input-number>
+          </div>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="closeScore">取 消</el-button>
+          <el-button type="primary" @click="sureScore">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
+  </div>
+</body>
+<script src="./js/main.js"></script>
+</html>

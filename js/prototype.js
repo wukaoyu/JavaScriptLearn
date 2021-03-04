@@ -1,0 +1,27 @@
+let obj = {
+  a: 2
+}
+let myObj = Object.create(obj)
+// myObj.a = 2
+// console.log(Object.getOwnPropertyDescriptor(obj, 'a')) 
+Object.defineProperty(obj, 'a', {
+  writable: false,
+  enumerable: true,
+})
+myObj.a = 5
+console.log(myObj.a)
+// for (let key in myObj) {
+//   console.log(key)
+// }
+
+function Foo() {
+
+}
+let newFoo = new Foo()
+console.log(Foo, newFoo)
+
+var a = []
+a.map(item => {
+  item = 2
+})
+console.log(a)

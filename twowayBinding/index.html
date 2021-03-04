@@ -1,0 +1,126 @@
+<!-- 双向绑定 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id='myVue'>
+    <div>
+      <p>123</p>
+    </div>
+    <div>
+
+    </div>
+  </div>
+</body>
+<script>
+  // 监听器
+  function defineReactive(data, key, val) {
+    let dep = new Dep()
+    observe(val) // 递归劫持数据
+    Object.defineProperty(data, key ,{
+      enumerable: true, // 是否可以枚举到value的值
+      configurable: true, // 是否可以配置value的值
+      get() {
+        if (Dep.target) {
+          dep.addDep(Dep.target);
+        }
+        return val
+      },
+      set(newVal) {
+        if (newVal === val) return
+        val = newVal
+        dep.notif()
+      }
+    })
+  }
+  function observe(val) {
+    if (!val || typeof val !== 'object') {
+      return
+    }
+    Object.keys(val).forEach(key => {
+      defineReactive(val, key, val[key])
+    })
+  }
+  class Dep {
+    constructor() {
+      this.subs = []
+    }
+    addDep = (data) => {
+      this.subs.push(data)
+    }
+    notif = () => {
+      this.subs.forEach(item => {
+        item.updata()
+      })
+    }
+  }
+  Dep.target = null;
+  // 订阅者
+  class Watcher {
+    constructor(vm, prop, callback) {
+      this.vm = vm
+      this.prop = prop
+      this.callback = callback
+      this.val = this.get()
+    }
+    get = () => {
+      Dep.target = this
+      const value = this.vm.$data[this.prop] // 执行数据劫持中的get
+      Dep.target = null
+      return val
+    }
+    updata = () => {
+      const value = this.vm.$data[this.prop]
+      const oldValue = this.val
+      if (value !== oldValue) {
+        this.val = value
+        this.callback(value)
+      }
+    }
+  }
+  class Compile {
+    constructor(vm) {
+      this.vm = vm
+      this.el = vm.$el
+      this.fragment = null
+      this.init()
+    }
+    init = () => {
+      this.fragment = this.nodeFragment(this.el)
+    }
+    nodeFragment = el => {
+      const fragment = document.createDocumentFragment()
+      let child = el.firstChild
+      while(child) {
+        fragment.appendChild(child)
+        child = child.firstChild
+      }
+      return fragment
+    }
+    compileNode
+  }
+  class myVue {
+    constructor(options, prop) {
+      this.$data = options.data
+      this.$options = options
+      this.$prop = prop
+      this.$el = document.querySelector(options.el)
+      this.init()
+    }
+    init = () => {
+      observe(this.$data)
+      new Compile(this);
+    }
+  }
+  const vm = new myVue({
+    el: '#myVue',
+    data: {
+      name: 'hahahahah'
+    }
+  }, 'name')
+</script>
+</html>
