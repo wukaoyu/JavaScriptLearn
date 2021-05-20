@@ -25,3 +25,24 @@ a.map(item => {
   item = 2
 })
 console.log(a)
+
+let Foo = {
+  init: function(who) {
+    this.me = who
+  },
+  indentify: function() {
+    return 'I am ' + this.me
+  }
+}
+let Bar = Object.create(Foo)
+Bar.speak = function() {
+  console.log('Hello, ' + this.indentify() + '.')
+}
+
+let b1 = Object.create(Bar)
+b1.init('bar1')
+let b2 = Object.create(Bar)
+b2.init('bar2')
+
+b1.speak()
+b2.speak()

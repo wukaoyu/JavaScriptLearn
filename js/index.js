@@ -38,68 +38,65 @@
 // }
 // // 深拷贝
 // // 第一个深拷贝问题太多了，数组里放入json无法深拷贝，而且有可能无限循环，爆栈
-// function deepClone(param) {
-//     if (param === null) return param
-//     let targer = Array.isArray(param) ? [] : {}
-//     for (let key in param) {
-//         if (Array.isArray(param)) {
-//             targer[key] = param[key]
-//         }else {
-//             targer[key] = deepClone(param[key])
-//         }
-//     }
-//     return targer
-// }
-// let deepObject = {
-//     a: 1,
-//     b: {
-//         a:2,
-//         b:3
-//     },
-//     c: function() {return 4},
-//     e: [1,2,3, {
-//         a: 1,
-//         b: 2,
-//         c: 3
-//     }]
-// }
+function deepClone(param) {
+    if (param === null) return param
+    let targer = Array.isArray(param) ? [] : {}
+    for (let key in param) {
+        if (Array.isArray(param)) {
+            targer[key] = param[key]
+        }else {
+            targer[key] = deepClone(param[key])
+        }
+    }
+    return targer
+}
+let deepObject = {
+    a: 1,
+    b: {
+        a:2,
+        b:3
+    },
+    c: function() {return 4},
+    e: [1,2,3]
+}
 // // 这种深拷贝方法好一些
-// function goodDeepClone(param) {
-//     const root = {};
-//     const loopList = [
-//         {
-//             parent: root,
-//             key: undefined,
-//             data: param,
-//         }
-//     ];
-//     while (loopList.length) {
-//         const node = loopList.pop();
-//         const parent = node.parent;
-//         const key = node.key;
-//         const data = node.data;
-//         let res = parent;
-//         if (typeof key !== 'undefined') {
-//             res = parent[key] = {};
-//         }
-//         for(let k in data) {
-//             if (data.hasOwnProperty(k)) {
-//                 if (typeof data[k] === 'object') {
-//                     // 下一次循环
-//                     loopList.push({
-//                         parent: res,
-//                         key: k,
-//                         data: data[k],
-//                     });
-//                 } else {
-//                     res[k] = data[k];
-//                 }
-//             }
-//         }
-//     }
-// }
-// let newObj = goodDeepClone(deepObject)
-// console.log(newObj, deepObject)
+function goodDeepClone(param) {
+    const root = {};
+    const loopList = [
+        {
+            parent: root,
+            key: undefined,
+            data: param,
+        }
+    ];
+    while (loopList.length) {
+        const node = loopList.pop();
+        const parent = node.parent;
+        const key = node.key;
+        const data = node.data;
+        let res = parent;
+        if (typeof key !== 'undefined') {
+            res = parent[key] = {};
+        }
+        for(let k in data) {
+            if (data.hasOwnProperty(k)) {
+                if (typeof data[k] === 'object') {
+                    // 下一次循环
+                    loopList.push({
+                        parent: res,
+                        key: k,
+                        data: data[k]
+                    });
+                } else {
+                    res[k] = data[k];
+                }
+            }
+        }
+    }
+    return root
+}
+let newObj = goodDeepClone(deepObject)
+// console.log(newObj, deepObject) 
 // console.log(a.quchong())
 // console.log(getValue.myBind(a, 'yck', '24'))
 
