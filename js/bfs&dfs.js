@@ -7,10 +7,12 @@ function bfs(node) {
     for (let i = 0; i < size; i++) {
       const cur = q.shift()
       console.log(cur)
-      if (cur.left != null)
-        q.push(cur.left);
-      if (cur.right != null) 
-        q.push(cur.right);
+      if (cur.left != null) {
+        q.push(cur.left)
+      }
+      if (cur.right != null) {
+        q.push(cur.right)
+      }
     }
     step++
   }
@@ -60,31 +62,51 @@ const a = {
 dfs(a)
 bfs(a)
 
-a = {
-  val: 1,
-  left: {
-    val: 2,
-    left: { val: 4, left: null, right: null, next: null },
-    right: null,
-    next: { val: 0, left: null, right: null, next: null }
-  },
-  right: { val: 0, left: null, right: null, next: null },
-  next: null
-}
+// a = {
+//   val: 1,
+//   left: {
+//     val: 2,
+//     left: { val: 4, left: null, right: null, next: null },
+//     right: null,
+//     next: { val: 0, left: null, right: null, next: null }
+//   },
+//   right: { val: 0, left: null, right: null, next: null },
+//   next: null
+// }
 
 
 
-b = {
-  val: 1,
-  left: {
-    val: 2,
-    left: { val: 4, left: null, right: null, next: null },
-    right: null,
-    next: 0
-  },
-  right: { val: 0, left: null, right: null, next: null },
-  next: null
-}
+// b = {
+//   val: 1,
+//   left: {
+//     val: 2,
+//     left: { val: 4, left: null, right: null, next: null },
+//     right: null,
+//     next: 0
+//   },
+//   right: { val: 0, left: null, right: null, next: null },
+//   next: null
+// }
 
 
+// function TreeNode(val){
+//   this.val = val;
+//   this.left = null;
+//   this.right = null;
+// }
 
+// function sortedArrayToBST (arr) {
+// 	let root = new TreeNode(arr[0]), temp = [root], idx = 0
+//   while(idx < arr.length) {
+//     const size = temp.length
+//     for (let i = 0; i < size; i++) {
+//       const node = temp.shift()
+//       node.left = arr[++idx] ? new TreeNode(arr[idx]) : null
+//       node.right = arr[++idx] ? new TreeNode(arr[idx]) : null
+//       temp.push(node.left)
+//       temp.push(node.right)
+//     }
+//   }
+// 	return root
+// }
+// console.log(sortedArrayToBST([1,2,3,4,5,6,7,null,8,null,null,9,10]))

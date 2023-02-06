@@ -285,4 +285,3 @@ var permuteUnique = function(nums) {
     return res
 };
 permuteUnique([1,2,3,4,5])
-

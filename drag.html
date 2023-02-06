@@ -18,11 +18,16 @@
   </style>
 </head>
 <body>
+<div onclick="shareClick()">123456</div>
+<div id="a"></div>
 <div class="drag" id="drag" style="height: auto !important;">
   拖拽的div
 </div>
 </body>
 <script>
+  function shareClick() {
+    document.getElementById('a').innerHTML = '1'
+  }
   const dargDom = document.getElementById('drag')
   dargDom.onmousedown = function(event) {       
     let shiftX = event.clientX - dargDom.getBoundingClientRect().left;       

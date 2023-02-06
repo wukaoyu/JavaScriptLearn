@@ -1,6 +1,7 @@
 // // function deepClone(param) {
 // import { def } from '../../vue-dev/src/core/util/lang';
-// //   const root = {}
+// import new from '../../test-project/src/store/index';
+//   const root = {}
 // //   let nodeList = [{
 // //     parent: root,
 // //     key: undefined,
@@ -311,111 +312,184 @@
 // }
 // o.fn() //  Object {fn: function}  
 // o.fn().myCall(test)
-let deepObject = {
-  a: 1,
-  b: {
-      a:2,
-      b:3
-  },
-  c: function() {return 4},
-  e: [1,2,3, {
-    a: 1,
-    b: 2
-  }]
-}
-// // 这种深拷贝方法好一些
-function goodDeepClone(param) {
-  const root = {};
-  const loopList = [
-      {
-          parent: root,
-          key: undefined,
-          data: param,
-      }
-  ];
-  while (loopList.length) {
-      // console.log(root)
-      const node = loopList.pop();
-      const parent = node.parent;
-      const key = node.key;
-      const data = node.data;
-      let res = parent;
-      if (typeof key !== 'undefined') {
-          res = parent[key] = (data instanceof Array ? [] : {});
-      }
-      // console.log(res, parent)
-      for(let k in data) {
-          if (data.hasOwnProperty(k)) {
-              if (typeof data[k] === 'object') {
-                  // 下一次循环
-                  loopList.push({
-                      parent: res,
-                      key: k,
-                      data: data[k]
-                  });
-              } else {
-                  res[k] = data[k];
-                  // console.log(res)
-              }
-          }
-          // console.log(k, root, res, key)
-      }
-      console.log('-----------')
+// let deepObject = {
+//   a: 1,
+//   b: {
+//       a:2,
+//       b:3
+//   },
+//   c: function() {return 4},
+//   e: [1,2,3, {
+//     a: 1,
+//     b: 2
+//   }]
+// }
+// // // 这种深拷贝方法好一些
+// function goodDeepClone(param) {
+//   const root = {};
+//   const loopList = [
+//       {
+//           parent: root,
+//           key: undefined,
+//           data: param,
+//       }
+//   ];
+//   while (loopList.length) {
+//       // console.log(root)
+//       const node = loopList.pop();
+//       const parent = node.parent;
+//       const key = node.key;
+//       const data = node.data;
+//       let res = parent;
+//       if (typeof key !== 'undefined') {
+//           res = parent[key] = (data instanceof Array ? [] : {});
+//       }
+//       // console.log(res, parent)
+//       for(let k in data) {
+//           if (data.hasOwnProperty(k)) {
+//               if (typeof data[k] === 'object') {
+//                   // 下一次循环
+//                   loopList.push({
+//                       parent: res,
+//                       key: k,
+//                       data: data[k]
+//                   });
+//               } else {
+//                   res[k] = data[k];
+//                   // console.log(res)
+//               }
+//           }
+//           // console.log(k, root, res, key)
+//       }
+//       console.log('-----------')
+//   }
+//   return root
+// }
+
+
+
+// function deepCloneTest(param) {
+//   const root = {}
+//   const rootList = [{
+//     parent: root,
+//     key: undefined,
+//     data: param
+//   }]
+//   while(rootList.length) {
+//     const node = rootList.shift()
+//     const parent = node.parent
+//     const key = node.key
+//     const data = node.data
+//     let res = parent
+//     if (typeof key !== 'undefined') {
+//       res = parent[key] = (data instanceof Array ? [] : {})
+//     }
+//     for (let k in data) {
+//       if (typeof data[k] === 'object') {
+//         rootList.push({
+//           parent: res,
+//           key: k,
+//           data: data[k]
+//         })
+//       } else {
+//         res[k] = data[k]
+//       }
+//       console.log(k, root, res, key)
+//     }
+//     console.log('-----------')
+//   }
+//   return root
+// }
+
+
+// let newObj = deepCloneTest(deepObject)
+// console.log(newObj)
+
+// console.log(compareVersion([2, 1, 2], [2, 0, 13]))
+// function compareVersion(ver1, ver2) {
+//   if (ver2.join('') === ver1.join('')) return 2
+//   for (let i = 0; i < ver1.length; i++) {
+//       let ver1Num = ver1[i] || 0
+//       let ver2Num = ver2[i] || 0
+//       console.log(ver1Num, ver2Num)
+//       if (ver1Num > ver2Num) {
+//           return 0
+//       }
+//       if (ver1Num < ver2Num) {
+//         return 1
+//       }
+//   }
+// }
+
+// let a = 'foo'
+// let b = Array.prototype.join.call(a, '-')
+// let c = 42
+
+
+
+Function.prototype.softBind = function(obj) {
+  var fn = this
+  var curried = [].slice.call(arguments, 1)
+  var bound = function() {
+    return fn.apply(
+      (!this || this === (global)) ? obj : this, curried.concat.apply(curried, arguments)
+    )
   }
-  return root
+  bound.prototype = Object.create(fn.prototype)
+  return bound
 }
 
-
-
-function deepCloneTest(param) {
-  const root = {}
-  const rootList = [{
-    parent: root,
-    key: undefined,
-    data: param
-  }]
-  while(rootList.length) {
-    const node = rootList.shift()
-    const parent = node.parent
-    const key = node.key
-    const data = node.data
-    let res = parent
-    if (typeof key !== 'undefined') {
-      res = parent[key] = (data instanceof Array ? [] : {})
-    }
-    for (let k in data) {
-      if (typeof data[k] === 'object') {
-        rootList.push({
-          parent: res,
-          key: k,
-          data: data[k]
-        })
-      } else {
-        res[k] = data[k]
-      }
-      console.log(k, root, res, key)
-    }
-    console.log('-----------')
-  }
-  return root
+function foo() {
+  console.log('name:' + this.name)
 }
+var obj = {name: 'obj'}
+var obj2 = {name: 'obj2'}
+var obj3 = {name: 'obj3'}
 
+var fooOBJ = foo.softBind(obj)
+fooOBJ()
+obj2.foo = foo.softBind(obj)
+obj2.foo()
+fooOBJ.call(obj3)
 
-let newObj = deepCloneTest(deepObject)
-console.log(newObj)
-
-console.log(compareVersion([2, 1, 2], [2, 0, 13]))
-function compareVersion(ver1, ver2) {
-  if (ver2.join('') === ver1.join('')) return 2
-  for (let i = 0; i < ver1.length; i++) {
-      let ver1Num = ver1[i] || 0
-      let ver2Num = ver2[i] || 0
-      console.log(ver1Num, ver2Num)
-      if (ver1Num > ver2Num) {
-          return 0
-      }
-      if (ver1Num < ver2Num) {
-        return 1
-      }
+setTimeout(obj2.foo, 10)
+function foo() {
+  return a => {
+    console.log(this.a)
   }
 }
+
+var obj1 = {
+  a: 1
+}
+
+var obj2 = {
+  a: 2
+}
+
+var bar = foo.call(obj1)
+bar.call(obj2)
+
+let str = 'I am a string'
+console.log(typeof str) // 'string'
+console.log(str instanceof String) // false
+
+let strObject = new String('I am a String')
+console.log(typeof strObject) // 'string'
+console.log(strObject instanceof String) // false
+
+function foo() {
+  console.log(this.a)
+}
+
+let obj = {
+  a: 2
+}
+console.log(Object.getOwnPropertyDescriptor(obj, 'a'))
+foo.call(obj)
+
+let arr = ['foo', 42, 'bar']
+arr['4'] = '123'
+console.log(arr.length)
+
+

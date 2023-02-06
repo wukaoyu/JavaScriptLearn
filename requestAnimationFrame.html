@@ -22,23 +22,24 @@
   </div>
 </body>
 <script>
-  const element = document.getElementById('a'); 
+  const element = document.getElementById('a')
   function myAnimation(fn, time = Infinity) {
     let start
     function step(timestamp) {
-      if (start === undefined)
-        start = timestamp;
-      const elapsed = timestamp - start;
+      if (start === undefined){
+        start = timestamp
+      }
+      const elapsed = timestamp - start
       fn(elapsed)
       if (elapsed < time) { // 在两秒后停止动画
-        window.requestAnimationFrame(step);
+        window.requestAnimationFrame(step)
       }
     }
-    window.requestAnimationFrame(step);
+    window.requestAnimationFrame(step)
   }
   function someThing(elapsed){
     //这里使用`Math.min()`确保元素刚好停在200px的位置。
-    element.style.transform = 'translateX(' + 0.2 * elapsed + 'px)';
+    element.style.transform = 'translateX(' + 0.05 * elapsed + 'px)'
   }
   myAnimation(someThing, 2000)
 </script>
